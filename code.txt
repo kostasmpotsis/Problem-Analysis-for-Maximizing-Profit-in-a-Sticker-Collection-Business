@@ -1,0 +1,218 @@
+###1 erwthma##################
+fun2=function(n,k){
+sunolika=NULL
+for(i in 1:1000){
+p=0
+found=rep(FALSE,n)
+while(sum(found)<n){
+stick=sample(1:n,k,replace=FALSE)
+found[stick]=TRUE
+p=p+1
+}
+sunolika[i]=p
+}
+return(list("paketa"=mean(sunolika),"n"=n,"k"=k))
+}
+
+
+
+
+k=c(5,6,7,8)
+n=c(200,300,400)
+data <- data.frame(paketa= numeric(0),n = integer(0), k = integer(0))
+for(n in c(200,300,400)){
+for(k in c(5,6,7,8)){
+result=fun2(n,k)
+data=rbind(data,data.frame(paketa=result[[1]],n=result[[2]],k=result[[3]]))
+}
+}
+
+
+data$selling=c(0.12,0.15,0.18,0.20)
+sp5=(data[data$k==5,]$paketa)*(data[data$k==5,]$selling)
+sp6=(data[data$k==6,]$paketa)*(data[data$k==6,]$selling)
+sp7=(data[data$k==7,]$paketa)*(data[data$k==7,]$selling)
+sp8=(data[data$k==8,]$paketa)*(data[data$k==8,]$selling)
+selprice=matrix(t((cbind(sp5,sp6,sp7,sp8))))
+data$selprice=data.frame(selprice)
+
+kn=rep(NA,dim(data)[1])
+kn[data$n==200]=4
+kn[data$n==300]=7
+kn[data$n==400]=11
+data$kn=kn
+
+data$totalcost=data$kn+(0.02*data$k*data$paketa)
+data$profit=(data$selprice)-(data$totalcost)
+names(data$profit)="profit"
+data[data$profit==max(data$profit),]
+
+labelsps=barplot((data$profit[1:12,]),names.arg=data$n,main="profit by k and n",col="blue")
+text(x=labelsps,y=data$profit[1:12,],label=data$k,col='black',cex=2.5)
+
+teb2=barplot(data$paketa,names.arg=data$n,col="blue",main="total packets sold")
+text(x=teb2,y=data$n,label=data$k,col='black',cex=1.8)
+
+
+
+############2 erwthma##########################
+fun3=function(n,k){
+sunolika=NULL
+for(i in 1:1000){
+p=0
+found=rep(FALSE,n)
+while(sum(found)<n){
+stick=sample(1:n,k)
+found[stick]=TRUE
+p=p+1
+}
+sunolika[i]=p
+}
+return(list(sunolika,"n"=n,"k"=k))
+}
+
+
+data <- data.frame(selprice=integer(0),'n'=integer(0),'k'=integer(0))
+for(n in c(200,300,400)){
+for(k in c(5,6,7,8)){
+result=fun3(n,k)
+data=rbind(data,data.frame(result[[1]],result[[2]],result[[3]]))
+}
+}
+head(data)
+names(data)=c("paketa","n","k")
+head(data)
+dim(data)
+##################n=200#####
+n=1000
+n200k5=sum(data[data$n==200&data$k==5,]$paketa*0.12<40)/n
+n200k6=sum(data[data$n==200&data$k==6,]$paketa*0.15<40)/n
+n200k7=sum(data[data$n==200&data$k==7,]$paketa*0.18<40)/n
+n200k8=sum(data[data$n==200&data$k==8,]$paketa*0.2<40)/n
+prwto=cbind(n200k5,n200k6,n200k7,n200k8)
+
+##n=300
+n300k5=sum(data[data$n==300&data$k==5,]$paketa*0.12<40)/n
+n300k6=sum(data[data$n==300&data$k==6,]$paketa*0.15<40)/n
+n300k7=sum(data[data$n==300&data$k==7,]$paketa*0.18<40)/n
+n300k8=sum(data[data$n==300&data$k==8,]$paketa*0.2<40)/n
+deutero=cbind(n300k5,n300k6,n300k7,n300k8)
+
+
+##n=400
+n400k5=sum(data[data$n==400&data$k==5,]$paketa*0.12<40)/n
+n400k6=sum(data[data$n==400&data$k==6,]$paketa*0.15<40)/n
+n400k7=sum(data[data$n==400&data$k==7,]$paketa*0.18<40)/n
+n400k8=sum(data[data$n==400&data$k==8,]$paketa*0.2<40)/n
+trito=cbind(n400k5,n400k6,n400k7,n400k8)
+total=data.frame(prwto,deutero,trito)
+
+proba=c(0.957,0.934,0.925,0.942,0.313,0.252,0.201,0.265,0.002,
+0,0.001,0)
+n=c(200,300,400)
+k=c(5,6,7,8)
+n200k=c(0.957,0.934,0.925,0.942)
+n300k=c(0.313,0.252,0.201,0.265)
+n400k=c(0.002,0,0.001,0)
+k1=cbind(rep(200,4),k,n200k)
+k2=cbind(rep(300,4),k,n300k)
+k3=cbind(rep(400,4),k,n400k)
+final=data.frame(rbind(k1,k2,k3))
+names(final)=c('n','k','prob')
+final
+labelsps=barplot(final$prob,names.arg=final$n,col='blue',main="probs to buy all the collection with amount 40 by k",cex.names =1.1)
+text(x=labelsps,y=final$prob,label=final$k,col='black',cex=2)
+
+
+
+
+
+
+#######3 erwthma##########################
+fun7=function(n,k){
+stick=list()
+for(i in 1:100000){
+stick[[i]]=sample(1:n,k,replace=TRUE)
+}
+k=lapply(stick, anyDuplicated)
+return(list('prob'=mean(k>0)))
+}
+
+prob <- data.frame(prob=integer(0),n = integer(0),k = integer(0))
+for(n in c(200,300,400)){
+for(k in c(5,6,7,8)){
+result=fun7(n,k)
+prob=rbind(prob,data.frame(prob=result[[1]],n=n,k=k))
+}
+}
+
+labelsps=barplot(prob$prob,names.arg=prob$n,col='blue',main='probs to be the same sticker in each pack by n and k')
+text(x=labelsps,y=prob$prob,label=prob$k,col='black',cex=2.5)
+
+
+#########3erwthma if same sticker in each pack############
+fun2=function(n,k){
+sunolika=NULL
+for(i in 1:1000){
+p=0
+found=rep(FALSE,n)
+while(sum(found)<n){
+stick=sample(1:n,k,replace=TRUE)
+found[stick]=TRUE
+p=p+1
+}
+sunolika[i]=p
+}
+return(list("paketa"=mean(sunolika),"n"=n,"k"=k))
+}
+
+
+
+
+k=c(5,6,7,8)
+n=c(200,300,400)
+data <- data.frame(paketa= numeric(0),n = integer(0), k = integer(0))
+for(n in c(200,300,400)){
+for(k in c(5,6,7,8)){
+result=fun2(n,k)
+data=rbind(data,data.frame(paketa=result[[1]],n=result[[2]],k=result[[3]]))
+}
+}
+
+
+data$selling=c(0.12,0.15,0.18,0.20)
+sp5=(data[data$k==5,]$paketa)*(data[data$k==5,]$selling)
+sp6=(data[data$k==6,]$paketa)*(data[data$k==6,]$selling)
+sp7=(data[data$k==7,]$paketa)*(data[data$k==7,]$selling)
+sp8=(data[data$k==8,]$paketa)*(data[data$k==8,]$selling)
+selprice=matrix(t((cbind(sp5,sp6,sp7,sp8))))
+data$selprice=data.frame(selprice)
+
+kn=rep(NA,dim(data)[1])
+kn[data$n==200]=4
+kn[data$n==300]=7
+kn[data$n==400]=11
+data$kn=kn
+
+data$totalcost=data$kn+(0.02*data$k*data$paketa)
+data$profit=(data$selprice)-(data$totalcost)
+names(data$profit)="profit"
+data[data$profit==max(data$profit),]
+
+
+#anyDuplicated checks in the stickers 
+#list if a package has the same stickers.
+#If it does then it displays a list where the packages 
+#that have 2 stickers and above have a positive number 
+#and the rest zero that do not have the same number of stickers
+#example 
+stick=list()
+for(i in 1:100){
+stick[[i]]=sample(1:200,5,replace=TRUE)
+}
+k=lapply(stick,anyDuplicated)
+
+k>0
+#if true the package that has two stickers or above is 
+#true the package that has unique stickers zero 
+mean(k>0)# caclulate probability tou have same stickers
