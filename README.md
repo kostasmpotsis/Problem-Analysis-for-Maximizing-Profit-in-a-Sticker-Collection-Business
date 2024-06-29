@@ -1,6 +1,8 @@
-# simulation-monte-carlo
-this is an analysis in a problem that we should solve as an analyst.The problem is to maximaze profit in a company and bring bussines solution 
-we have collection stickers n=200,300,400 and pachages k=5,6,7,8 stickers and for each pachage have a sellingr price and for each have a product 
-cost for different n,the cost of a pachage k is 0.02 so is 0.02.I simulate monte carlo for tou see how many pachage wiil buy be average the buyer
-how is the probability too pich same sticker in each pachage and what is the probability to complete the collection with a total 40 amount.
+# Problem Analysis for Maximizing Profit in a Sticker Collection Business
+We are tasked with maximizing profit for a company that sells sticker collections. The company offers collections of different sizes (n = 200, 300, 400 stickers) and packages containing different numbers of stickers (k = 5, 6, 7, 8 stickers per package). Each package is sold at a specified price, and each sticker has a production cost of $0.02.
 
+Objectives:
+Simulate Buyer Behavior: Use Monte Carlo simulations to estimate how many packages a typical buyer will purchase on average.
+Calculate Probabilities:
+Determine the probability of receiving duplicate stickers in each package.
+Calculate the probability of a buyer completing the entire collection within a total expenditure of 40 units (currency).
